@@ -7,3 +7,4 @@ services:
       - "3000:3000"
     container_name: syr
     restart: always
+    command: npm run dev

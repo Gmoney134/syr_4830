@@ -1,22 +1,19 @@
-# 1. Use an official Node.js runtime as a parent
+# Use the official Node.js image
 FROM node:latest
 
-# 2. Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# 3. Copy package.json and package-lock.json first
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# 4. Install dependencies
+# Install dependencies
 RUN npm install
 
-# 5. Copy the rest of your code
+# Copy the entire project
 COPY . .
 
-# 6. Build the Next.js app
-RUN npm run build
-
-# 7. Expose port 3000
+# Expose the default Next.js development port
 EXPOSE 3000
 
 # Start the development server
