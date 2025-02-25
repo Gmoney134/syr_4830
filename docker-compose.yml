@@ -16,5 +16,5 @@ services:
       # CHOKIDAR_USEPOLLING: "true"
       NEXT_TELEMETRY_DISABLED: "1"
     # Start in dev mode
-    command: npm run dev
+
     restart: always

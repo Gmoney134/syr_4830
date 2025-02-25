@@ -1,17 +1,20 @@
 # Use the official Node.js image
-FROM node:latest
+FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
+COPY package-lock.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the entire project
 COPY . .
+
+RUN npm run build
 
 # Expose the default Next.js development port
 EXPOSE 3000
