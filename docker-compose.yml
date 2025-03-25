@@ -8,13 +8,10 @@ services:
     container_name: syr
     volumes:
       - .:/app
-      # Avoid overwriting node_modules with an empty folder
       - /app/node_modules
     # Set environment variables if needed
     environment:
-      # If you're on Windows or certain environments, you may need polling:
-      # CHOKIDAR_USEPOLLING: "true"
       NEXT_TELEMETRY_DISABLED: "1"
+      DATABASE_URL: ${DATABASE_URL}
     # Start in dev mode
-
     restart: always
