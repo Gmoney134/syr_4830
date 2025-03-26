@@ -14,6 +14,9 @@ RUN npm install
 # Copy the entire project
 COPY . .
 
+# Generate the Prisma client
+RUN npx prisma generate
+
 RUN npm run build
 
 # Expose the default Next.js development port
