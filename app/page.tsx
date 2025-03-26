@@ -22,7 +22,7 @@ export default function LoginPage() {
       setError(data.error || 'Login failed');
     } else {
       localStorage.setItem('token', data.token); // optional, for future auth use
-      router.push('/dashboard'); // redirect after login
+      router.push('/motorcycles'); // redirect after login
     }
   };
 

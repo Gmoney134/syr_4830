@@ -8,8 +8,17 @@ generator client {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id           String        @id @default(cuid())
   email    String  @unique
   password String
+  createdAt DateTime @default(now())
+  motorcycles  Motorcycle[]
+}
+
+model Motorcycle {
+  id       String   @id @default(cuid())
+  name     String
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
   createdAt DateTime @default(now())
 }
