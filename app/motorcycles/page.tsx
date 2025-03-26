@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type Motorcycle = {
   id: string;
@@ -33,6 +34,7 @@ export default function MotorcyclesPage() {
   const [error, setError] = useState('');
   const [selectedBrand, setSelectedBrand] = useState<string>('All');
   const [search, setSearch] = useState<string>('');
+  const router = useRouter();
 
   const fetchMotorcycles = async () => {
     const token = localStorage.getItem('token');
@@ -116,6 +118,11 @@ export default function MotorcyclesPage() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/');
+  };
+
   useEffect(() => {
     fetchMotorcycles();
   }, []);
@@ -127,7 +134,16 @@ export default function MotorcyclesPage() {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl mb-4 font-semibold">My Motorcycles</h1>
+      {/* Logout Button */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-semibold">My Motorcycles</h1>
+        <button
+          onClick={handleLogout}
+          className="text-sm text-red-600 hover:underline"
+        >
+          Logout
+        </button>
+      </div>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
@@ -146,7 +162,7 @@ export default function MotorcyclesPage() {
         Add Motorcycle
       </button>
 
-      {/* FILTER CONTROLS */}
+      {/* Filters */}
       <div className="flex gap-2 mb-4">
         <select
           className="border p-2 flex-1 text-black"
@@ -161,7 +177,6 @@ export default function MotorcyclesPage() {
           ))}
         </select>
 
-        {/* SEARCH BAR */}
         <input
           type="text"
           placeholder="Search..."
@@ -171,7 +186,7 @@ export default function MotorcyclesPage() {
         />
       </div>
 
-      {/* DISPLAY FILTERED LIST */}
+      {/* Motorcycle List */}
       <ul>
         {filteredMotorcycles.map((moto) => (
           <li key={moto.id} className="border-b py-2 flex justify-between items-center">
