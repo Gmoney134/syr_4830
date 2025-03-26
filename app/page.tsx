@@ -60,7 +60,15 @@ export default function LoginPage() {
           Login
         </button>
       </form>
+
+      
+    {/* ✅ Register Button */}
+    <button
+        onClick={() => router.push('/register')}
+        className="mt-4 text-blue-600 hover:underline text-sm"
+      >
+        Don’t have an account? Register
+      </button>
     </div>
   );
 }
-
