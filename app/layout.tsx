@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Should You Ride?",
+  title: "Store Your Ride",
 };
 
 export default function RootLayout({
