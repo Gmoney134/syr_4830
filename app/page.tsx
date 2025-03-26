@@ -27,9 +27,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 px-4 text-center">
+      {/* ✅ TITLE AND DESCRIPTION */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-2">Store Your Rides</h1>
+        <p className="text-gray-600 text-lg">
+          Easily save, view, and manage your favorite motorcycles in one place.
+        </p>
+      </div>
+
+      {/* ✅ LOGIN FORM */}
       <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-80 space-y-4">
-        <h1 className="text-2xl font-bold text-center">Login</h1>
+        <h2 className="text-2xl font-bold text-center">Login</h2>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <input
           type="email"
@@ -54,3 +63,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

@@ -8,10 +8,31 @@ type Motorcycle = {
   createdAt: string;
 };
 
+const BRANDS = [
+  'Honda',
+  'Yamaha',
+  'Harley-Davidson',
+  'Kawasaki',
+  'Suzuki',
+  'BMW',
+  'Ducati',
+  'KTM',
+  'Triumph',
+  'Royal Enfield',
+  'Aprilia',
+  'Husqvarna',
+  'MV Agusta',
+  'Moto Guzzi',
+  'Indian',
+];
+
 export default function MotorcyclesPage() {
   const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
+  const [filteredMotorcycles, setFilteredMotorcycles] = useState<Motorcycle[]>([]);
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState<string>('All');
+  const [search, setSearch] = useState<string>('');
 
   const fetchMotorcycles = async () => {
     const token = localStorage.getItem('token');
@@ -29,10 +50,22 @@ export default function MotorcyclesPage() {
     if (res.ok) {
       const data: Motorcycle[] = await res.json();
       setMotorcycles(data);
+      applyFilters(data, selectedBrand, search); // Initial filter
     } else {
       const { error } = await res.json();
       setError(error || 'Failed to load motorcycles.');
     }
+  };
+
+  const applyFilters = (data: Motorcycle[], brand: string, searchText: string) => {
+    const lowerSearch = searchText.toLowerCase();
+    const filtered = data.filter((m) => {
+      const nameLower = m.name.toLowerCase();
+      const matchesBrand = brand === 'All' || nameLower.includes(brand.toLowerCase());
+      const matchesSearch = !searchText || nameLower.includes(lowerSearch);
+      return matchesBrand && matchesSearch;
+    });
+    setFilteredMotorcycles(filtered);
   };
 
   const addMotorcycle = async () => {
@@ -87,6 +120,11 @@ export default function MotorcyclesPage() {
     fetchMotorcycles();
   }, []);
 
+  // Re-run filtering when brand or search changes
+  useEffect(() => {
+    applyFilters(motorcycles, selectedBrand, search);
+  }, [selectedBrand, search, motorcycles]);
+
   return (
     <div className="p-4 max-w-md mx-auto">
       <h1 className="text-2xl mb-4 font-semibold">My Motorcycles</h1>
@@ -95,7 +133,7 @@ export default function MotorcyclesPage() {
 
       <input
         className="border p-2 w-full mb-2"
-        style={{ color: 'black' }} 
+        style={{ color: 'black' }}
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Enter motorcycle name"
@@ -108,8 +146,34 @@ export default function MotorcyclesPage() {
         Add Motorcycle
       </button>
 
+      {/* FILTER CONTROLS */}
+      <div className="flex gap-2 mb-4">
+        <select
+          className="border p-2 flex-1 text-black"
+          value={selectedBrand}
+          onChange={(e) => setSelectedBrand(e.target.value)}
+        >
+          <option value="All">All Brands</option>
+          {BRANDS.map((brand) => (
+            <option key={brand} value={brand}>
+              {brand}
+            </option>
+          ))}
+        </select>
+
+        {/* SEARCH BAR */}
+        <input
+          type="text"
+          placeholder="Search..."
+          className="border p-2 flex-1 text-black"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      {/* DISPLAY FILTERED LIST */}
       <ul>
-        {motorcycles.map((moto) => (
+        {filteredMotorcycles.map((moto) => (
           <li key={moto.id} className="border-b py-2 flex justify-between items-center">
             <span>{moto.name}</span>
             <button
